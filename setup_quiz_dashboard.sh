@@ -23,16 +23,15 @@ sudo apt install python3-pip -y && log_message "python3-pip installed successful
 
 # Create app directory
 log_message "Creating application directory..."
-mkdir -p /root/quiz-dashboard && log_message "Application directory created" || log_message "Directory creation failed"
+mkdir -p /home/ubuntu/quiz-website-portal && log_message "Application directory created" || log_message "Directory creation failed"
 
 # Navigate to app directory
-cd /root/quiz-dashboard
-log_message "Changed directory to /root/quiz-dashboard"
+cd /home/ubuntu/quiz-website-portal
+log_message "Changed directory to /home/ubuntu/quiz-website-portal"
 
 # Create Python virtual environment
 log_message "Installing python3.12-venv..."
 sudo apt install -y python3.12-venv && log_message "python3.12-venv installed successfully" || log_message "python3.12-venv installation failed"
-
 
 log_message "Creating virtual environment..."
 python3 -m venv venv && log_message "Virtual environment created successfully" || log_message "Virtual environment creation failed"
@@ -50,40 +49,40 @@ export MYSQLCLIENT_CFLAGS="$(pkg-config --cflags mysqlclient)"
 export MYSQLCLIENT_LDFLAGS="$(pkg-config --libs mysqlclient)"
 
 # Clone the repository only if it doesn't already exist
-if [ ! -d "/root/quiz-dashboard/.git" ]; then
+if [ ! -d "/home/ubuntu/quiz-website-portal/.git" ]; then
     log_message "Cloning repository from GitHub..."
-    git clone https://github.com/Manohar-1305/quiz-dashboard.git && log_message "Repository cloned successfully" || log_message "Repository cloning failed"
+    git clone https://github.com/Manohar-1305/quiz-dashboard.git . && log_message "Repository cloned successfully" || log_message "Repository cloning failed"
 else
     log_message "Repository already exists, skipping cloning."
 fi
 
-# Change to the cloned directory
-cd quiz-dashboard
-log_message "Changed directory to quiz-dashboard"
-
 # Install Python dependencies
 log_message "Installing Python dependencies from requirements.txt..."
-pip install -r requirements.txt && log_message "Dependencies installed successfully" || log_message "Dependency installation failed"
+pip install --upgrade pip
+pip install -r requirements.txt
+pip install flask flask_sqlalchemy flask_login flask_migrate pymysql && log_message "Flask and dependencies ensured installed"
 
 # Ensure log directory exists
-mkdir -p /root/quiz-dashboard/
-touch /root/quiz-dashboard/app.log
-chown root:root /root/quiz-dashboard/app.log
-chmod 666 /root/quiz-dashboard/app.log
+mkdir -p /home/ubuntu/quiz-website-portal/
+touch /home/ubuntu/quiz-website-portal/app.log
+chown ubuntu:ubuntu /home/ubuntu/quiz-website-portal/app.log
+chmod 666 /home/ubuntu/quiz-website-portal/app.log
 
 # Create systemd service for Flask app
 log_message "Creating systemd service for Flask app..."
 sudo bash -c 'cat <<EOF > /etc/systemd/system/flaskapp.service
 [Unit]
-Description=flask app
+Description=Flask Quiz App
 After=network.target
 
 [Service]
-User=root
-Group=root
-WorkingDirectory=/root/quiz-dashboard/
-Environment="PATH=/root/quiz-dashboard/venv/bin"
-ExecStart=/root/quiz-dashboard/venv/bin/python3 /root/quiz-dashboard/app.py
+User=ubuntu
+Group=ubuntu
+WorkingDirectory=/home/ubuntu/quiz-website-portal
+Environment="PATH=/home/ubuntu/quiz-website-portal/venv/bin"
+ExecStart=/home/ubuntu/quiz-website-portal/venv/bin/python3 /home/ubuntu/quiz-website-portal/app.py
+Restart=always
+RestartSec=5
 
 [Install]
 WantedBy=multi-user.target
@@ -96,8 +95,8 @@ sudo systemctl enable flaskapp.service && log_message "Flask app service enabled
 
 # Start the Flask app service
 log_message "Starting Flask app service..."
-sudo systemctl start flaskapp.service && log_message "Flask app service started" || log_message "Flask app service start failed"
+sudo systemctl restart flaskapp.service && log_message "Flask app service started" || log_message "Flask app service start failed"
 
 # Check Flask service status
 log_message "Checking Flask app service status..."
-systemctl status flaskapp.service
+systemctl status flaskapp.service --no-pager
