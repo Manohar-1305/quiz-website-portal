@@ -1,0 +1,13 @@
+Flask
+Flask-SQLAlchemy
+Flask-WTF
+pytube
+gunicorn
+requests
+python-dotenv
+Flask-Cors==3.0.10
+Flask-Login
+Flask-Migrate
+Flask-Bcrypt
+psycopg2-binary
+mysqlclient
