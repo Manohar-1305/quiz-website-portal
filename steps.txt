@@ -19,4 +19,11 @@ sudo mysql -u root -p'password' quizdb -e "SELECT * FROM quiz;"
 
 sudo mysql -u root -p'password' quizdb -e "SELECT id, question, correct_answer FROM quiz;"
 
+mysql -h quiz-db-instance.cntmq2bmtycd.ap-south-1.rds.amazonaws.com -u quiz_user -p
+
+
+sudo mysql -u root -p -e "
+CREATE USER 'quiz_user'@'%' IDENTIFIED BY 'password';
+GRANT ALL PRIVILEGES ON quizdb.* TO 'quiz_user'@'%';
+FLUSH PRIVILEGES;"
 
