@@ -146,6 +146,8 @@ def load_user(user_id):
 if __name__ == '__main__':
     # Create a handler for writing log messages to a file
     handler = RotatingFileHandler('/root/quiz-dashboard/app.log', maxBytes=10000, backupCount=1)
+    handler = RotatingFileHandler('/home/ubuntu/quiz-website-portal/app.log', maxBytes=10000, backupCount=1)
+
     handler.setLevel(logging.INFO)  # Set logging level to INFO
 
     # Create a formatter that specifies the log message format
