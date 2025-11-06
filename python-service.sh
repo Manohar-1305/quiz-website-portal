@@ -6,9 +6,10 @@ After=network.target
 User=root
 Group=root
 WorkingDirectory=/root/quiz-dashboard
-Environment="PATH=/root/quiz-dashboard/venv/bin"
+Environment="PATH=/root/quiz-website-portal/venv/bin"
 ExecStart=/root/quiz-dashboard/venv/bin/python3 /root/quiz-dashboard/app.py
 
 [Install]
 WantedBy=multi-user.target
+
 
