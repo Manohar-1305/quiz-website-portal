@@ -145,7 +145,7 @@ def load_user(user_id):
 
 if __name__ == '__main__':
     # Create a handler for writing log messages to a file
-    handler = RotatingFileHandler('/root/quiz-dashboard/app.log', maxBytes=10000, backupCount=1)
+    handler = RotatingFileHandler('app.log', maxBytes=10000, backupCount=1)
     handler = RotatingFileHandler('/home/ubuntu/quiz-website-portal/app.log', maxBytes=10000, backupCount=1)
 
     handler.setLevel(logging.INFO)  # Set logging level to INFO
@@ -325,3 +325,4 @@ if __name__ == '__main__':
         db.create_all()
         create_admin()  # Ensures admin exists
     app.run(debug=True, host='0.0.0.0', port=5000)
+
