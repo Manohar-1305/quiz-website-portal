@@ -27,3 +27,11 @@ CREATE TABLE user (
     is_admin TINYINT(1) NOT NULL
 );
 ALTER TABLE user MODIFY COLUMN password VARCHAR(512);
+
+
+On Application Server
+----------------------
+touch /root/quiz-website-portal/app.log
+chmod 666 /root/quiz-website-portal/app.log
+
+
