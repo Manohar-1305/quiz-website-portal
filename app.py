@@ -8,18 +8,39 @@ from flask_login import LoginManager, login_required, current_user
 from config import Config
 import logging
 from logging.handlers import RotatingFileHandler
+import os
+BASE_DIR = os.path.abspath(os.path.dirname(__file__))
+LOG_FILE = os.path.join(BASE_DIR, "app.log")
+import logging
+from logging.handlers import RotatingFileHandler
+import os
+
+handler = RotatingFileHandler(
+    os.getenv("APP_LOG_FILE", "app.log"),
+    maxBytes=10000,
+    backupCount=1
+)
+
+handler.setLevel(logging.INFO)
+formatter = logging.Formatter(
+    '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+)
+handler.setFormatter(formatter)
+
 
 # Initialize the Flask app
 app = Flask(__name__)
 app.config.from_object(Config)
 
+app.logger.addHandler(handler)
+app.logger.setLevel(logging.INFO)
 
 # Initialize the database and migrate objects
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)  # Initialize Migrate after defining app
 login_manager = LoginManager()
 login_manager.init_app(app)
-login_manager.login_view = "login" 
+login_manager.login_view = "login"
 # ✅ Fix: Use db.session.get() for retrieving User in Flask-Login
 @login_manager.user_loader
 def load_user(user_id):
@@ -143,22 +164,6 @@ def submit_quiz():
 def load_user(user_id):
     return User.query.get(int(user_id))
 
-if __name__ == '__main__':
-    # Create a handler for writing log messages to a file
-    handler = RotatingFileHandler('app.log', maxBytes=10000, backupCount=1)
-    handler = RotatingFileHandler('/home/ubuntu/quiz-website-portal/app.log', maxBytes=10000, backupCount=1)
-
-    handler.setLevel(logging.INFO)  # Set logging level to INFO
-
-    # Create a formatter that specifies the log message format
-    formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-    handler.setFormatter(formatter)
-
-    # Add the handler to the Flask app's logger
-    app.logger.addHandler(handler)
-
-    # Log an initial message to confirm the setup
-    app.logger.info('App started and logging is configured.')
 
 
 
@@ -176,7 +181,7 @@ def register():
     if request.method == 'POST':
         username = request.form['username']
         password = generate_password_hash(request.form['password'])
-        
+
         if User.query.filter_by(username=username).first():
             flash("Username already exists!", "danger")
             return redirect(url_for('register'))
@@ -226,7 +231,7 @@ def admin_dashboard():
 def create_quiz():
     if not current_user.is_admin:
         return redirect(url_for('user_dashboard'))  # Redirect if not admin
-    
+
     topics = Topic.query.all()  # Get all topics for the dropdown
 
     if request.method == 'POST':
@@ -324,5 +329,4 @@ if __name__ == '__main__':
     with app.app_context():
         db.create_all()
         create_admin()  # Ensures admin exists
-    app.run(debug=True, host='0.0.0.0', port=5000)
-
+    app.run(host='0.0.0.0', port=5000)
