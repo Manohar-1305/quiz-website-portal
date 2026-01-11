@@ -41,5 +41,8 @@ SELECT
 FROM score s
 JOIN user u ON s.user_id = u.id;
 
-
-
+USE quizdb;
+SELECT   u.id,   u.username,   s.score FROM score s JOIN user u ON s.user_id = u.id;
+SELECT * FROM quiz;
+SHOW DATABASES; SHOW TABLES FROM quizdb; DESCRIBE quizdb
+SELECT * FROM user;
