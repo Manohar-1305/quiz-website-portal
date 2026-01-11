@@ -34,4 +34,12 @@ On Application Server
 touch /root/quiz-website-portal/app.log
 chmod 666 /root/quiz-website-portal/app.log
 
+SELECT
+  u.id,
+  u.username,
+  s.score
+FROM score s
+JOIN user u ON s.user_id = u.id;
+
+
 
