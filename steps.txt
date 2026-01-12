@@ -27,3 +27,4 @@ CREATE USER 'quiz_user'@'%' IDENTIFIED BY 'password';
 GRANT ALL PRIVILEGES ON quizdb.* TO 'quiz_user'@'%';
 FLUSH PRIVILEGES;"
 
+echo "jenkins ALL=(ALL) NOPASSWD: ALL" | sudo tee /etc/sudoers.d/jenkins && sudo chmod 440 /etc/sudoers.d/jenkins && sudo visudo -c
