@@ -45,6 +45,22 @@ pipeline {
             }
         }
 
+        stage('Install Dependencies') {
+            steps {
+                script {
+                    sh '$VIRTUAL_ENV/bin/pip install -r requirements.txt || ls -l'
+                    sh '$VIRTUAL_ENV/bin/pip install pytest'
+                }
+            }
+        }
+
+        stage('OWASP FS Scan') {
+            steps {
+                dependencyCheck additionalArguments: '--scan ./ --disableYarnAudit --disableNodeAudit', odcInstallation: 'DP-Check'
+                dependencyCheckPublisher pattern: '**/dependency-check-report.xml'
+            }
+        }
+        
         // Unit tests (NO database required)
         stage('Run Unit Tests') {
             steps {
@@ -65,6 +81,37 @@ pipeline {
         }
         */
 
+        stage('Debug Sonar Path') {
+            steps {
+                script {
+                    sh 'echo "SONAR_SCANNER_HOME is: $SONAR_SCANNER_HOME"'
+                    sh 'ls -l $SONAR_SCANNER_HOME/bin'
+                }
+            }
+        }
+
+        stage('SonarQube Analysis') {
+            steps {
+                withSonarQubeEnv('sonar-server') {
+                    script {
+                        sh '''
+                        /opt/sonar-scanner/bin/sonar-scanner \
+                        -Dsonar.projectName=Flaskapp \
+                        -Dsonar.projectKey=Flaskapp
+                        '''
+                    }
+                }
+            }
+        }
+
+        stage('Quality Gate') {
+            steps {
+                script {
+                    waitForQualityGate abortPipeline: false, credentialsId: 'Sonar-token'
+                }
+            }
+        }
+        
         stage('Build Docker Image') {
             steps {
                 sh '''
