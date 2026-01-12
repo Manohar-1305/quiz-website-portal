@@ -110,10 +110,10 @@ stage('Snyk Security Scan') {
 }
 
 
-stage('Push Docker Image') {
-    steps {
-        withCredentials([
-            usernamePassword(
+   stage('Push Docker Image') {
+      steps {
+          withCredentials([
+              usernamePassword(
                 credentialsId: 'docker-creds',
                 usernameVariable: 'DOCKER_USERNAME',
                 passwordVariable: 'DOCKER_PASSWORD'
@@ -129,26 +129,8 @@ stage('Push Docker Image') {
 
             docker push $DOCKERHUB_USER/$IMAGE_NAME:$IMAGE_TAG
             '''
-        }
+          }
+      }
     }
-}
-
-
-        stage('Deployment') {
-            steps {
-                sh '''
-                kubectl set image deployment/quiz-app \
-                quiz-app=$DOCKER_USERNAME/$IMAGE_NAME:$IMAGE_TAG
-                '''
-            }
-        }
-
-        stage('Prune Docker Images') {
-            steps {
-                sh '''
-                docker system prune -af --volumes
-                '''
-            }
-        }
-    }
+  }
 }
