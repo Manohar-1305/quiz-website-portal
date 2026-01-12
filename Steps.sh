@@ -1,3 +1,14 @@
+#Plugins Installed
+Docker Commons 
+Docker Pipeline
+Pipeline: Stage View 
+Web for Blue Ocean
+Distributed Workspace Clean
+Snyk Security
+Pipeline Utility Steps
+SonarQube Scanner
+OWASP Dependency-Check
+
 #Configure Sonarqube
 Tools -> Dependency->DP-Check->installation->automatic
 Tools => SonarQube Scanner installations =>Add Sonarqube Scanner =>name=sonar-server
