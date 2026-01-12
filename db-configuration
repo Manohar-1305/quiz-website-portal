@@ -14,3 +14,11 @@ pip install locust
 locust -f locustfile.py --host http://127.0.0.1:5000
 http://public-ip:8089
 
+#Setting sudo Permission for docker
+sudo chmod 666 /var/run/docker.sock
+sudo usermod -aG docker jenkins
+sudo systemctl restart docker
+sudo systemctl restart jenkins
+
+
+
