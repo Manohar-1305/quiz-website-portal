@@ -17,19 +17,6 @@ pipeline {
             }
         }
 
-        stage('Cleanup Workspace') {
-            steps {
-                cleanWs()
-            }
-        }
-
-        stage('Checkout Code') {
-            steps {
-                git branch: 'main',
-                    url: 'https://github.com/Manohar-1305/quiz-website-portal.git'
-            }
-        }
-
         stage('Install python3-venv') {
             steps {
                 sh '''
@@ -57,13 +44,25 @@ pipeline {
             }
         }
 
+        // Unit tests (NO database required)
         stage('Run Unit Tests') {
             steps {
                 sh '''
-                $VIRTUAL_ENV/bin/pytest --disable-warnings -q || true
+                $VIRTUAL_ENV/bin/pytest -v -m "not integration"
                 '''
             }
         }
+
+        /*
+        // Integration tests (REQUIRES database)
+        stage('Run Integration Tests (DB)') {
+            steps {
+                sh '''
+                $VIRTUAL_ENV/bin/pytest -v -m integration
+                '''
+            }
+        }
+        */
 
         stage('Build Docker Image') {
             steps {
