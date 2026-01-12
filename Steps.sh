@@ -29,3 +29,7 @@ snyk --version
 curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sudo sh -s -- -b /usr/local/bin
 trivy --version
 
+# Trivy & Synk
+/var/lib/jenkins/workspace/my-pipeline/
+ls -al trivy-image-report.html
+ls -al snyk-report.html
