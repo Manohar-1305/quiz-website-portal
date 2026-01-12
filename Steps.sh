@@ -6,6 +6,11 @@ Manage Jenkins → Configure System → SonarQube=> SonarQube installations=>  N
 Administration=>Security=>Users=>create a token=>Sonar-token
 Administration-Configuration->Webhooks->Create->Name->jenkins-sonar-webhoook->URL->http://65.2.137.252:8080/sonarqube-webhook
 
+# Add secrets for snyk & docker
+manage -> credentials -> Global -> Add Credentials -> Secret text-> Secret ->  ID -> Snyk-Token -> Description -> Snyk-Token
+
+#Add Docker Credentials as secret
+manage -> credentials -> Global -> Add Credentials -> Username with password -> Username -> Password -> ID -> docker-creds -> Description -> docker-creds
 #Setting sudo Permission for docker
 sudo chmod 666 /var/run/docker.sock
 sudo usermod -aG docker jenkins
