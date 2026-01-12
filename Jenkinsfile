@@ -6,6 +6,7 @@ pipeline {
         IMAGE_NAME  = 'quiz-web-app'
         IMAGE_TAG   = 'v1'
         SCANNER_HOME = '/opt/sonar-scanner'
+        DOCKERHUB_USER   = 'manoharshetty507'
     }
 
     stages {
@@ -107,28 +108,29 @@ pipeline {
             }
         }
 
-        stage('Push Docker Image') {
-            steps {
-                withCredentials([
-                    usernamePassword(
-                        credentialsId: 'docker-creds',
-                        usernameVariable: 'DOCKER_USERNAME',
-                        passwordVariable: 'DOCKER_PASSWORD'
-                    )
-                ]) {
-                    sh '''
-                    echo $DOCKER_PASSWORD | docker login \
-                    --username $DOCKER_USERNAME \
-                    --password-stdin
+stage('Push Docker Image') {
+    steps {
+        withCredentials([
+            usernamePassword(
+                credentialsId: 'docker-creds',
+                usernameVariable: 'DOCKER_USERNAME',
+                passwordVariable: 'DOCKER_PASSWORD'
+            )
+        ]) {
+            sh '''
+            echo $DOCKER_PASSWORD | docker login \
+            --username $DOCKER_USERNAME \
+            --password-stdin
 
-                    docker tag $IMAGE_NAME:$IMAGE_TAG \
-                    $DOCKER_USERNAME/$IMAGE_NAME:$IMAGE_TAG
+            docker tag $IMAGE_NAME:$IMAGE_TAG \
+            $DOCKERHUB_USER/$IMAGE_NAME:$IMAGE_TAG
 
-                    docker push $DOCKER_USERNAME/$IMAGE_NAME:$IMAGE_TAG
-                    '''
-                }
-            }
+            docker push $DOCKERHUB_USER/$IMAGE_NAME:$IMAGE_TAG
+            '''
         }
+    }
+}
+
 
         stage('Deployment') {
             steps {
