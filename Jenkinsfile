@@ -88,25 +88,27 @@ pipeline {
             }
         }
 
-        stage('Snyk Security Scan') {
-            steps {
-                withCredentials([string(credentialsId: 'Snyk-Token', variable: 'SNYK_TOKEN')]) {
-                    sh '''
-                    snyk auth $SNYK_TOKEN
-                    snyk container test $IMAGE_NAME:$IMAGE_TAG \
-                    --severity-threshold=high \
-                    --json > snyk-report.json || true
+stage('Snyk Security Scan') {
+    steps {
+        withCredentials([string(credentialsId: 'Snyk-Token', variable: 'SNYK_TOKEN')]) {
+            sh '''
+            snyk auth $SNYK_TOKEN
 
-                    snyk-to-html -i snyk-report.json -o snyk-report.html
-                    '''
-                }
-            }
-            post {
-                always {
-                    archiveArtifacts artifacts: 'snyk-report.html', fingerprint: true
-                }
-            }
+            snyk container test $IMAGE_NAME:$IMAGE_TAG \
+            --severity-threshold=high \
+            --json > snyk-report.json || true
+
+            npx snyk-to-html -i snyk-report.json -o snyk-report.html
+            '''
         }
+    }
+    post {
+        always {
+            archiveArtifacts artifacts: 'snyk-report.html', fingerprint: true
+        }
+    }
+}
+
 
 stage('Push Docker Image') {
     steps {
