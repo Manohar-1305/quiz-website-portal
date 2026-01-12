@@ -17,28 +17,6 @@ http://public-ip:8089
 # Adding Jenkins to sudoers
 echo "jenkins ALL=(ALL) NOPASSWD: ALL" | sudo tee /etc/sudoers.d/jenkins && sudo chmod 440 /etc/sudoers.d/jenkins && sudo visudo -c
 
-#Setting sudo Permission for docker
-sudo chmod 666 /var/run/docker.sock
-sudo usermod -aG docker jenkins
-sudo systemctl restart docker
-sudo systemctl restart jenkins
-
-# installation of Snyk
-# Install Node.js if not already installed
-sudo apt update
-sudo apt install -y nodejs npm
-# Install Snyk using npm
-npm install -g snyk
-
-# Download the latest Snyk CLI binary
-curl -Lo snyk "https://static.snyk.io/cli/latest/snyk-linux"
-chmod +x snyk
-sudo mv snyk /usr/local/bin
-snyk --version
-
-#Trivy installlation
-curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sudo sh -s -- -b /usr/local/bin
-trivy --version
 
 
 
