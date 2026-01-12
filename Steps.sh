@@ -9,6 +9,9 @@ Pipeline Utility Steps
 SonarQube Scanner
 OWASP Dependency-Check
 
+#install sonarqube
+docker run -d --name sonarqube -p 9000:9000 sonarqube:lts
+
 #Configure Sonarqube
 Tools -> Dependency->DP-Check->installation->automatic
 Tools => SonarQube Scanner installations =>Add Sonarqube Scanner =>name=sonar-server
