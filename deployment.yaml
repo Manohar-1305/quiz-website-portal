@@ -16,7 +16,7 @@ spec:
       containers:
         - name: quiz-app
           image: quiz-app:latest
-          imagePullPolicy: IfNotPresent
+          imagePullPolicy: Always
           ports:
             - containerPort: 5000
 ---
