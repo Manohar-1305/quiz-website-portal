@@ -81,19 +81,22 @@ pipeline {
             }
         }
 
-        stage('SonarQube Analysis') {
-            steps {
-                withSonarQubeEnv('sonar-server') {
-                    script {
-                        sh '''
-                        /opt/sonar-scanner/bin/sonar-scanner \
-                        -Dsonar.projectName=Flaskapp \
-                        -Dsonar.projectKey=Flaskapp
-                        '''
-                    }
-                }
+       stage('SonarQube Analysis') {
+    steps {
+        withSonarQubeEnv('sonar-server') {
+            script {
+                def scannerHome = tool name: 'sonar-scanner', type: 'hudson.plugins.sonar.SonarRunnerInstallation'
+                sh """
+                ${scannerHome}/bin/sonar-scanner \
+                -Dsonar.projectName=Flaskapp \
+                -Dsonar.projectKey=Flaskapp
+                """
             }
         }
+    }
+}
+
+
 
         stage('Quality Gate') {
             steps {
@@ -135,7 +138,6 @@ stage('Snyk Security Scan') {
             snyk container test $IMAGE_NAME:$IMAGE_TAG \
             --severity-threshold=high \
             --json > snyk-report.json || true
-
             npx snyk-to-html -i snyk-report.json -o snyk-report.html
             '''
         }
