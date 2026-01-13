@@ -45,12 +45,20 @@ pipeline {
             }
         }
 
-        stage('OWASP FS Scan') {
-            steps {
-                dependencyCheck additionalArguments: '--scan ./ --disableYarnAudit --disableNodeAudit', odcInstallation: 'DP-Check'
-                dependencyCheckPublisher pattern: '**/dependency-check-report.xml'
-            }
-        }
+stage('OWASP FS Scan') {
+    steps {
+        dependencyCheck additionalArguments: '''
+        --scan ./
+        --exclude .venv
+        --disableYarnAudit
+        --disableNodeAudit
+        --data /var/lib/jenkins/dependency-check-data
+        ''',
+        odcInstallation: 'DP-Check'
+
+        dependencyCheckPublisher pattern: '**/dependency-check-report.xml'
+    }
+}
         
         // Unit tests (NO database required)
         stage('Run Unit Tests') {
