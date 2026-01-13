@@ -1,4 +1,4 @@
-
+https://www.jenkins.io/doc/book/installing/linux/
 #Install Java
 sudo apt update
 sudo apt install -y openjdk-21-jdk
