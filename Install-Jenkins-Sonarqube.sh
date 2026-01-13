@@ -14,6 +14,7 @@ echo deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc] \
 sudo apt update
 sudo apt install -y jenkins
 
+
 # Enable & check Status
 sudo systemctl enable jenkins
 sudo systemctl start jenkins
