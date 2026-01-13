@@ -66,3 +66,7 @@ mv dependency-check/* /opt/dependency-check/
 # verify
 ls /opt/dependency-check/bin/dependency-check.sh
 ls -al snyk-report.html
+
+#Let users run Docker Commands
+sudo chmod 666 /var/run/docker.sock
+
