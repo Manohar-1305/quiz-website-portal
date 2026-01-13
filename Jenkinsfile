@@ -45,25 +45,17 @@ pipeline {
             }
         }
 
-        stage('OWASP FS Scan') {
-        steps {
-            withCredentials([string(credentialsId: 'NVD_API_KEY', variable: 'NVD_API_KEY')]) {
-            dependencyCheck additionalArguments: '''
-            --scan ./
-            --exclude .venv
-            --disableYarnAudit
-            --disableNodeAudit
-            --data /var/lib/jenkins/dependency-check-data
-            --nvdApiKey ${NVD_API_KEY}
-            --nvdApiDelay 10000
-            --nvdMaxRetryCount 10
-            ''',
-            odcInstallation: 'DP-Check'
-        }
-
-        dependencyCheckPublisher pattern: '**/dependency-check-report.xml'
+stage('OWASP Dependency-Check Vulnerabilities') {
+      steps {
+        dependencyCheck additionalArguments: ''' 
+                    -o './'
+                    -s './'
+                    -f 'ALL' 
+                    --prettyPrint''', odcInstallation: 'DP-Check'
+        
+        dependencyCheckPublisher pattern: 'dependency-check-report.xml'
+      }
     }
-}
 
 
         // Unit tests (NO database required)
