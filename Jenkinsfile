@@ -45,31 +45,26 @@ pipeline {
             }
         }
 
-stage('OWASP FS Scan') {
-    steps {
-        dependencyCheck additionalArguments: '''
-        --scan ./
-        --exclude .venv
-        --disableYarnAudit
-        --disableNodeAudit
-        --data /var/lib/jenkins/dependency-check-data
-        ''',
-        odcInstallation: 'DP-Check'
+        stage('OWASP FS Scan') {
+        steps {
+            withCredentials([string(credentialsId: 'NVD_API_KEY', variable: 'NVD_API_KEY')]) {
+            dependencyCheck additionalArguments: '''
+            --scan ./
+            --exclude .venv
+            --disableYarnAudit
+            --disableNodeAudit
+            --data /var/lib/jenkins/dependency-check-data
+            --nvdApiKey ${NVD_API_KEY}
+            --nvdApiDelay 10000
+            --nvdMaxRetryCount 10
+            ''',
+            odcInstallation: 'DP-Check'
+        }
 
         dependencyCheckPublisher pattern: '**/dependency-check-report.xml'
     }
 }
 
-        stage('OWASP FS Scan1') {
-    steps {
-        script {
-            sh '''
-            set +e
-            dependency-check.sh --scan . --format XML --out dependency-check-report || true
-            '''
-        }
-    }
-}
 
         // Unit tests (NO database required)
         stage('Run Unit Tests') {
