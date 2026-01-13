@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: quiz-app
-          image: quiz-app:latest
+          image: manoharshetty507/quiz-web-app:v1
           imagePullPolicy: Always
           ports:
             - containerPort: 5000
@@ -31,4 +31,4 @@ spec:
   ports:
     - port: 5000
       targetPort: 5000
-      nodePort: 30007
+      nodePort: 30005
