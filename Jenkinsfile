@@ -38,15 +38,6 @@ pipeline {
 
         stage('Install Dependencies') {
             steps {
-                sh '''
-                $VIRTUAL_ENV/bin/pip install -r requirements.txt || true
-                $VIRTUAL_ENV/bin/pip install pytest
-                '''
-            }
-        }
-
-        stage('Install Dependencies') {
-            steps {
                 script {
                     sh '$VIRTUAL_ENV/bin/pip install -r requirements.txt || ls -l'
                     sh '$VIRTUAL_ENV/bin/pip install pytest'
