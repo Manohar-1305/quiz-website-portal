@@ -81,13 +81,6 @@ sudo find / -type f -name "*dependency-check*" 2>/dev/null
 sudo locate dependency-check
 
 
-#Get Kubeconfig
-kind get kubeconfig --name multi-node-cluster
-kind get kubeconfig --name multi-node-cluster > kubeconfig
-
-# Change the IP
-#from 127.0.0.1
-server: https://3.108.227.150:6443
 
 #Add kubeconfig in Jenkins
 Steps to Add kubeconfig in Jenkins
@@ -108,11 +101,18 @@ kubeconfig-file
 Description: Kubernetes kubeconfig for KIND cluster (optional)
 Click Save.
 
+#Get Kubeconfig
+kind get kubeconfig --name multi-node-cluster
+kind get kubeconfig --name multi-node-cluster > kubeconfig
+
+# Change the IP
+#from 127.0.0.1
+server: https://3.108.227.150:6443
+
 #Install kubectl on jenkins server
 curl -LO https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl
 chmod +x kubectl
 sudo mv kubectl /usr/local/bin/
-
 kubectl version --client
 
 # On kind Server - save kubeconfig
