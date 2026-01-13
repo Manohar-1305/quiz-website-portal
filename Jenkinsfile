@@ -59,7 +59,18 @@ stage('OWASP FS Scan') {
         dependencyCheckPublisher pattern: '**/dependency-check-report.xml'
     }
 }
-        
+
+        stage('OWASP FS Scan1') {
+    steps {
+        script {
+            sh '''
+            set +e
+            dependency-check.sh --scan . --format XML --out dependency-check-report || true
+            '''
+        }
+    }
+}
+
         // Unit tests (NO database required)
         stage('Run Unit Tests') {
             steps {
