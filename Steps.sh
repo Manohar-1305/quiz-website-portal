@@ -11,7 +11,7 @@ OWASP Dependency-Check
 
 
 #Configure Sonarqube
-Tools -> Dependency->DP-Check->installation->automatic
+Tools -> Dependency->DP-Check->installation->/opt/dependency-check
 Tools => SonarQube Scanner installations =>Add Sonarqube Scanner =>name=sonar-server
 Systems->SonarQube installations->Name->sonar-server->Server authentication token->Sonar-token
 Manage Jenkins → Configure System → SonarQube=> SonarQube installations=>  Name=> sonar-server => Server URL =>http://65.2.184.54:9000=> Server authentication token => Add - Select a  token or create a new token-> Sonarqube URL-> Administration-Configuration-> Security -> User -> Create a new token - Take token -> and create a secret in jenkins.
@@ -53,4 +53,16 @@ trivy --version
 # Trivy & Synk
 /var/lib/jenkins/workspace/my-pipeline/
 ls -al trivy-image-report.html
+
+#dOWNLOAD owsap
+curl -fL https://github.com/jeremylong/DependencyCheck/releases/download/v9.0.10/dependency-check-9.0.10-release.zip -o dc.zip
+apt-get update && apt-get install -y unzip
+unzip dc.zip
+
+find . -maxdepth 2 -type d -name "dependency-check*"
+mkdir -p /opt/dependency-check
+mv dependency-check/* /opt/dependency-check/
+
+# verify
+ls /opt/dependency-check/bin/dependency-check.sh
 ls -al snyk-report.html
