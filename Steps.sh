@@ -85,6 +85,10 @@ sudo locate dependency-check
 kind get kubeconfig --name multi-node-cluster
 kind get kubeconfig --name multi-node-cluster > kubeconfig
 
+# Change the IP
+#from 127.0.0.1
+server: https://3.108.227.150:6443
+
 #Add kubeconfig in Jenkins
 Steps to Add kubeconfig in Jenkins
 Step 1: Open Jenkins Credentials
