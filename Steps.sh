@@ -9,6 +9,12 @@ Pipeline Utility Steps
 SonarQube Scanner
 OWASP Dependency-Check
 
+# Adding Jenkins to sudoers
+echo "jenkins ALL=(ALL) NOPASSWD: ALL" | sudo tee /etc/sudoers.d/jenkins && sudo chmod 440 /etc/sudoers.d/jenkins && sudo visudo -c
+
+#Setting sudo Permission for docker
+sudo chmod 666 /var/run/docker.sock
+
 
 #Configure Sonarqube
 Tools -> Dependency->DP-Check->installation->/opt/dependency-check
