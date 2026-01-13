@@ -73,3 +73,10 @@ sudo chmod 666 /var/run/docker.sock
 sudo find / -type d -name "*dependency-check*" 2>/dev/null
 sudo find / -type f -name "*dependency-check*" 2>/dev/null
 sudo locate dependency-check
+
+
+#Get Kubeconfig
+kind get kubeconfig --name multi-node-cluster
+kind get kubeconfig --name multi-node-cluster > kubeconfig
+
+
