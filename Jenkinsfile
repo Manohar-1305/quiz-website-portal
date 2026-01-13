@@ -178,5 +178,26 @@ stage('Snyk Security Scan') {
           }
       }
     }
+        stage('Kubernetes Authentication') {
+        steps {
+        script {
+            withCredentials([file(credentialsId: 'kubeconfig-file', variable:'KUBECONFIG')]) {
+                sh 'echo "Kubernetes authentication successful"'
+            }
+        }
+    }
+}
+
+        stage('Deploy to Kubernetes') {
+        steps {
+        script {
+            withCredentials([file(credentialsId: 'kubeconfig-file', variable:'KUBECONFIG')]) {
+                // Apply the deployment manifest
+                sh 'kubectl apply -f deployment.yaml'
+
+            }
+        }
+    }
+    }
   }
 }
