@@ -79,4 +79,23 @@ sudo locate dependency-check
 kind get kubeconfig --name multi-node-cluster
 kind get kubeconfig --name multi-node-cluster > kubeconfig
 
+#Add kubeconfig in Jenkins
+Steps to Add kubeconfig in Jenkins
+Step 1: Open Jenkins Credentials
+Go to Jenkins Dashboard
+Click Manage Jenkins
+Click Credentials
+Select (global) domain (or the domain your job uses)
+Click Add Credentials
+
+Step 2: Add the kubeconfig file
+Fill the form as follows:
+Kind: Secret file
+File: Upload your kubeconfig file
+(any filename is fine: config, kubeconfig.yaml, etc.)
+ID:
+kubeconfig-file
+Description: Kubernetes kubeconfig for KIND cluster (optional)
+Click Save.
+
 
