@@ -198,6 +198,7 @@ stage('Snyk Security Scan') {
         script {
             withCredentials([file(credentialsId: 'kubeconfig-file', variable:'KUBECONFIG')]) {
                 // Apply the deployment manifest
+                sh 'kubectl apply -f mysql-deployment.yaml'
                 sh 'kubectl apply -f deployment.yaml'
 
             }
