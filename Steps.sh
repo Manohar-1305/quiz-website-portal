@@ -108,6 +108,7 @@ kind get kubeconfig --name multi-node-cluster > kubeconfig
 # Change the IP
 #from 127.0.0.1
 server: https://3.108.227.150:6443
+docker ps | grep control-plane
 
 #Install kubectl on jenkins server
 curl -LO https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl
