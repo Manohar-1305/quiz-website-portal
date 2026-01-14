@@ -12,3 +12,4 @@ Flask-Login
 Flask-Migrate
 Flask-Bcrypt
 psycopg2-binary
+mysqlclient
