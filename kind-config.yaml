@@ -5,6 +5,13 @@ networking:
   apiServerAddress: "0.0.0.0"
   apiServerPort: 6443
 
+kubeadmConfigPatches:
+- |
+  kind: ClusterConfiguration
+  apiServer:
+    certSANs:
+      - "3.108.227.150"   # ← THIS is what was missing
+
 nodes:
   - role: control-plane
     extraPortMappings:
@@ -32,3 +39,4 @@ nodes:
         hostPort: 30010
   - role: worker
   - role: worker
+
