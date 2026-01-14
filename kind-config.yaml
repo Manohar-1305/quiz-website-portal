@@ -10,7 +10,7 @@ kubeadmConfigPatches:
   kind: ClusterConfiguration
   apiServer:
     certSANs:
-      - "3.108.227.150"   # ← THIS is what was missing
+      - "3.108.227.150"   # ← THIS is what was missing, add IP of NODE
 
 nodes:
   - role: control-plane
