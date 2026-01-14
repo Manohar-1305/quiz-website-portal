@@ -1,4 +1,5 @@
 Flask
+pytest
 Flask-SQLAlchemy
 Flask-WTF
 pytube
@@ -11,3 +12,4 @@ Flask-Migrate
 Flask-Bcrypt
 psycopg2-binary
 mysqlclient
+
