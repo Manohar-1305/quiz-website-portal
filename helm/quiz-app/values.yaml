@@ -1,0 +1,12 @@
+replicaCount: 1
+
+image:
+  repository: manoharshetty507/quiz-web-app
+  tag: v1
+  pullPolicy: Always
+
+service:
+  type: NodePort
+  port: 5000
+  targetPort: 5000
+  nodePort: 30005

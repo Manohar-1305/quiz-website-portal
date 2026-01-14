@@ -1,0 +1,22 @@
+replicaCount: 1
+
+image:
+  repository: manoharshetty507/mysql-quizdb
+  tag: v1
+  pullPolicy: IfNotPresent
+
+mysql:
+  database: quizdb
+  rootPassword: password
+  user: quiz-user
+  password: password
+
+persistence:
+  enabled: true
+  accessMode: ReadWriteOnce
+  size: 5Gi
+
+service:
+  type: NodePort
+  port: 3306
+  targetPort: 3306
