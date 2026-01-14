@@ -6,7 +6,7 @@ pipeline {
         IMAGE_NAME  = 'quiz-web-app'
         IMAGE_TAG   = 'v1'
         SCANNER_HOME = '/opt/sonar-scanner'
-        DOCKERHUB_USER   = 'manoharshetty507'
+        DOCKERHUB_USER = 'manoharshetty507'
     }
 
     stages {
@@ -18,14 +18,20 @@ pipeline {
             }
         }
 
-        stage('Install python3-venv') {
-            steps {
-                sh '''
-                sudo apt-get update
-                sudo apt-get install -y python3-venv
-                '''
-            }
-        }
+    stage('Install python3-venv') {
+    steps {
+        sh '''
+        sudo apt-get update
+        sudo apt-get install -y \
+            python3-venv \
+            python3-dev \
+            pkg-config \
+            default-libmysqlclient-dev \
+            build-essential
+        '''
+    }
+}
+
 
         stage('Set Up Virtual Environment') {
             steps {
@@ -38,27 +44,26 @@ pipeline {
 
         stage('Install Dependencies') {
             steps {
-                script {
-                    sh '$VIRTUAL_ENV/bin/pip install -r requirements.txt || ls -l'
-                    sh '$VIRTUAL_ENV/bin/pip install pytest'
-                }
+                sh '''
+                $VIRTUAL_ENV/bin/pip install -r requirements.txt
+                $VIRTUAL_ENV/bin/pip install pytest
+                '''
             }
         }
 
-stage('OWASP Dependency-Check Vulnerabilities') {
-      steps {
-        dependencyCheck additionalArguments: ''' 
+        stage('OWASP Dependency-Check Vulnerabilities') {
+            steps {
+                dependencyCheck additionalArguments: '''
                     -o './'
                     -s './'
-                    -f 'ALL' 
-                    --prettyPrint''', odcInstallation: 'DP-Check'
-        
-        dependencyCheckPublisher pattern: 'dependency-check-report.xml'
-      }
-    }
+                    -f 'ALL'
+                    --prettyPrint
+                ''', odcInstallation: 'DP-Check'
 
+                dependencyCheckPublisher pattern: 'dependency-check-report.xml'
+            }
+        }
 
-        // Unit tests (NO database required)
         stage('Run Unit Tests') {
             steps {
                 sh '''
