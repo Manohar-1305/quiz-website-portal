@@ -80,8 +80,6 @@ sudo find / -type d -name "*dependency-check*" 2>/dev/null
 sudo find / -type f -name "*dependency-check*" 2>/dev/null
 sudo locate dependency-check
 
-
-
 #Add kubeconfig in Jenkins
 Steps to Add kubeconfig in Jenkins
 Step 1: Open Jenkins Credentials
@@ -100,6 +98,10 @@ ID:
 kubeconfig-file
 Description: Kubernetes kubeconfig for KIND cluster (optional)
 Click Save.
+
+
+#Create a Kind Cluster
+kind create cluster --config kind-config
 
 #Get Kubeconfig
 kind get kubeconfig --name multi-node-cluster
