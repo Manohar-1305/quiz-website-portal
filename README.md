@@ -1,4 +1,11 @@
-# Plugins Installed
+# Application Deployment – Steps and Configuration
+
+This section documents the steps and configurations used to deploy the application using Jenkins CI/CD, Docker, Kubernetes (KIND), and Argo CD.
+
+---
+
+## Prerequisites Installed
+- Jenkins with required plugins
 
 Docker Commons  
 Docker Pipeline  
