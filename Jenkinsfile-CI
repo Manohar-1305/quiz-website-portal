@@ -175,25 +175,6 @@ pipeline {
           }
       }
     }
-    stage('Kubernetes Authentication') {
-        steps {
-        script {
-            withCredentials([file(credentialsId: 'kubeconfig-file', variable:'KUBECONFIG')]) {
-                sh 'echo "Kubernetes authentication successful"'
-            }
-        }
-    }
-}
-   stage('Deploy to Kubernetes') {
-            steps {
-                script {
-                    withCredentials([file(credentialsId: 'kubeconfig-file', variable: 'KUBECONFIG')]) {
-                        sh 'kubectl apply -f mysql-deployment.yaml'
-                        sh 'kubectl apply -f deployment.yaml'
-                    }
-                }
-            }
-        }
 
     }
 }
