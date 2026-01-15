@@ -186,7 +186,7 @@ kubectl get svc argocd-server -n argocd
 kubectl get secret argocd-initial-admin-secret -n argocd \
   -o jsonpath="{.data.password}" | base64 -d
 ```
-Install Argo CD CLI
+# Install Argo CD CLI
 ```bash
 curl -sSL -o argocd \
 https://github.com/argoproj/argo-cd/releases/latest/download/argocd-linux-amd64
