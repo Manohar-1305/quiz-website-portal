@@ -20,6 +20,7 @@ OWASP Dependency-Check
 ---
 
 # Adding Jenkins to sudoers
+- run on Jenkins Server
 
 ```bash
 echo "jenkins ALL=(ALL) NOPASSWD: ALL" | sudo tee /etc/sudoers.d/jenkins && sudo chmod 440 /etc/sudoers.d/jenkins && sudo visudo -c
