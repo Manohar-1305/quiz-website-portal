@@ -9,7 +9,7 @@ spec:
   source:
     repoURL: https://github.com/Manohar-1305/quiz-website-portal.git
     targetRevision: main
-    path: argocd
+    path: argocd/apps
 
   destination:
     server: https://kubernetes.default.svc
@@ -19,3 +19,4 @@ spec:
     automated:
       prune: true
       selfHeal: true
+
