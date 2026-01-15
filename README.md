@@ -25,10 +25,29 @@ OWASP Dependency-Check
 ```bash
 echo "jenkins ALL=(ALL) NOPASSWD: ALL" | sudo tee /etc/sudoers.d/jenkins && sudo chmod 440 /etc/sudoers.d/jenkins && sudo visudo -c
 ```
+# Docker and Helm Installation
+## Step 1: Install Docker
 
+```bash
+apt update
+apt install docker.io -y
+```
+# Start and enable Docker:
+``` bash
+systemctl start docker
+systemctl enable docker
+```
 # Setting sudo Permission for docker
 sudo chmod 666 /var/run/docker.sock
 
+# Install Helm for Installing argocd
+```
+snap install helm --classic
+```
+Verify Helm installation:
+```
+helm version
+```
 # Configure OSWAP Dependency
 Tools -> Dependency -> DP-Check -> Install automatically-> Install from github.com -> Version latest
 
