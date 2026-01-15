@@ -180,6 +180,6 @@ post {
     build job: 'CD-Quiz-Application'
   }
 }
-
+}
     }
 }
