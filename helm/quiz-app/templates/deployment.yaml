@@ -16,5 +16,8 @@ spec:
         - name: quiz-app
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+            - name: SQLALCHEMY_DATABASE_URI
+              value: {{ .Values.env.SQLALCHEMY_DATABASE_URI | quote }}
           ports:
             - containerPort: {{ .Values.service.port }}
