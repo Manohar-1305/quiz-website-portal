@@ -1,0 +1,18 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Apply Argo CD Applications') {
+            steps {
+                script {
+                    withCredentials([file(credentialsId: 'kubeconfig-file', variable: 'KUBECONFIG')]) {
+                        sh '''
+                          kubectl apply -f argocd/mysql-quizdb.yaml
+                          kubectl apply -f argocd/quiz-app.yaml
+                        '''
+                    }
+                }
+            }
+        }
+    }
+}
