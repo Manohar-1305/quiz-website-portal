@@ -38,7 +38,8 @@ SonarQube installations
 Name = sonar-server
 Server URL = http://65.2.184.54:9000
 Server authentication token = Sonar-token
-
+ Change the ip of Sonarqube Server IP
+ 
 # Go to Sonarqube URL
 Administration → Configuration → Security → User
 Create a new token and store it in Jenkins
