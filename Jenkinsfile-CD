@@ -2,7 +2,15 @@ pipeline {
     agent any
 
     stages {
-        stage('Deploy Quiz Apply Via Argocd') {
+
+        stage('Checkout') {
+            steps {
+                git branch: 'main',
+                    url: 'https://github.com/Manohar-1305/quiz-website-portal.git'
+            }
+        }
+
+        stage('Apply App-of-Apps') {
             steps {
                 script {
                     withCredentials([file(credentialsId: 'kubeconfig-file', variable: 'KUBECONFIG')]) {
