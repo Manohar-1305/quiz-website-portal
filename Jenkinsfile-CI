@@ -18,20 +18,19 @@ pipeline {
             }
         }
 
-    stage('Install python3-venv') {
-    steps {
-        sh '''
-        sudo apt-get update
-        sudo apt-get install -y \
-            python3-venv \
-            python3-dev \
-            pkg-config \
-            default-libmysqlclient-dev \
-            build-essential
-        '''
-    }
-}
-
+        stage('Install python3-venv') {
+            steps {
+                sh '''
+                sudo apt-get update
+                sudo apt-get install -y \
+                    python3-venv \
+                    python3-dev \
+                    pkg-config \
+                    default-libmysqlclient-dev \
+                    build-essential
+                '''
+            }
+        }
 
         stage('Set Up Virtual Environment') {
             steps {
@@ -73,7 +72,6 @@ pipeline {
         }
 
         /*
-        // Integration tests (REQUIRES database)
         stage('Run Integration Tests (DB)') {
             steps {
                 sh '''
@@ -92,20 +90,21 @@ pipeline {
             }
         }
 
-       stage('SonarQube Analysis') {
-    steps {
-        withSonarQubeEnv('sonar-server') {
-            script {
-                def scannerHome = tool name: 'sonar-scanner', type: 'hudson.plugins.sonar.SonarRunnerInstallation'
-                sh """
-                ${scannerHome}/bin/sonar-scanner \
-                -Dsonar.projectName=Flaskapp \
-                -Dsonar.projectKey=Flaskapp
-                """
+        stage('SonarQube Analysis') {
+            steps {
+                withSonarQubeEnv('sonar-server') {
+                    script {
+                        def scannerHome = tool name: 'sonar-scanner', type: 'hudson.plugins.sonar.SonarRunnerInstallation'
+                        sh """
+                        ${scannerHome}/bin/sonar-scanner \
+                        -Dsonar.projectName=Flaskapp \
+                        -Dsonar.projectKey=Flaskapp
+                        """
+                    }
+                }
             }
         }
-    }
-}
+
         stage('Quality Gate') {
             steps {
                 script {
@@ -113,6 +112,7 @@ pipeline {
                 }
             }
         }
+
         stage('Build Docker Image') {
             steps {
                 sh '''
@@ -120,7 +120,8 @@ pipeline {
                 '''
             }
         }
-        stage ('Trivy Image Scan'){
+
+        stage('Trivy Image Scan') {
             steps {
                 sh '''
                 trivy image --format table \
@@ -134,52 +135,55 @@ pipeline {
                 }
             }
         }
-    stage('Snyk Security Scan') {
-    steps {
-        withCredentials([string(credentialsId: 'Snyk-Token', variable: 'SNYK_TOKEN')]) {
-            sh '''
-            snyk auth $SNYK_TOKEN
 
-            snyk container test $IMAGE_NAME:$IMAGE_TAG \
-            --severity-threshold=high \
-            --json > snyk-report.json || true
-            npx snyk-to-html -i snyk-report.json -o snyk-report.html
-            '''
+        stage('Snyk Security Scan') {
+            steps {
+                withCredentials([string(credentialsId: 'Snyk-Token', variable: 'SNYK_TOKEN')]) {
+                    sh '''
+                    snyk auth $SNYK_TOKEN
+
+                    snyk container test $IMAGE_NAME:$IMAGE_TAG \
+                    --severity-threshold=high \
+                    --json > snyk-report.json || true
+                    npx snyk-to-html -i snyk-report.json -o snyk-report.html
+                    '''
+                }
+            }
+            post {
+                always {
+                    archiveArtifacts artifacts: 'snyk-report.html', fingerprint: true
+                }
+            }
         }
+
+        stage('Push Docker Image') {
+            steps {
+                withCredentials([
+                    usernamePassword(
+                        credentialsId: 'docker-creds',
+                        usernameVariable: 'DOCKER_USERNAME',
+                        passwordVariable: 'DOCKER_PASSWORD'
+                    )
+                ]) {
+                    sh '''
+                    echo $DOCKER_PASSWORD | docker login \
+                    --username $DOCKER_USERNAME \
+                    --password-stdin
+
+                    docker tag $IMAGE_NAME:$IMAGE_TAG \
+                    $DOCKERHUB_USER/$IMAGE_NAME:$IMAGE_TAG
+
+                    docker push $DOCKERHUB_USER/$IMAGE_NAME:$IMAGE_TAG
+                    '''
+                }
+            }
+        }
+
     }
+
     post {
-        always {
-            archiveArtifacts artifacts: 'snyk-report.html', fingerprint: true
+        success {
+            build job: 'CD-Quiz-Application'
         }
-    }
-}
-    stage('Push Docker Image') {
-      steps {
-          withCredentials([
-              usernamePassword(
-                credentialsId: 'docker-creds',
-                usernameVariable: 'DOCKER_USERNAME',
-                passwordVariable: 'DOCKER_PASSWORD'
-            )
-        ]) {
-            sh '''
-            echo $DOCKER_PASSWORD | docker login \
-            --username $DOCKER_USERNAME \
-            --password-stdin
-
-            docker tag $IMAGE_NAME:$IMAGE_TAG \
-            $DOCKERHUB_USER/$IMAGE_NAME:$IMAGE_TAG
-
-            docker push $DOCKERHUB_USER/$IMAGE_NAME:$IMAGE_TAG
-            '''
-          }
-      }
-    }
-post {
-  success {
-    build job: 'CD-Quiz-Application'
-  }
-}
-}
     }
 }
