@@ -129,8 +129,58 @@ chmod +x kubectl
 sudo mv kubectl /usr/local/bin/
 kubectl version --client
 
+# Get kubeconfig
+
 On kind Server - save kubeconfig
 export KUBECONFIG=/root/config
 kubectl get nodes
 
+# Argo CD Installation (NodePort)
+
+```bash
+helm repo add argo https://argoproj.github.io/argo-helm
+helm repo update
+```
+
+# Create a namespace
+```bash
+kubectl create namespace argocd
+```
+
+# Create a values.yaml for argocd
+```bash
+cat <<EOF > argocd-values.yaml
+server:
+  insecure: true
+  service:
+    type: NodePort
+    nodePortHttp: 30004
+    nodePortHttps: null
+EOF
+```
+# Helm install argocd
+```bash
+helm install argocd argo/argo-cd -n argocd -f argocd-values.yaml
+```
+
+# Check Pod & Svc
+```bash
+kubectl get pods -n argocd
+kubectl get svc -n argocd
+kubectl get svc argocd-server -n argocd
+
+```
+# Get the admin password
+``` bash
+kubectl get secret argocd-initial-admin-secret -n argocd \
+  -o jsonpath="{.data.password}" | base64 -d
+```
+Install Argo CD CLI
+```bash
+curl -sSL -o argocd \
+https://github.com/argoproj/argo-cd/releases/latest/download/argocd-linux-amd64
+chmod +x argocd
+sudo mv argocd /usr/local/bin/argocd
+argocd version
+```
 
