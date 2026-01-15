@@ -25,7 +25,7 @@ This repository documents the complete Jenkins setup used for CI/CD with Docker,
 echo "jenkins ALL=(ALL) NOPASSWD: ALL" | sudo tee /etc/sudoers.d/jenkins
 sudo chmod 440 /etc/sudoers.d/jenkins
 sudo visudo -c
-
+```
 Docker Permissions
 sudo chmod 666 /var/run/docker.sock
 sudo usermod -aG docker jenkins
