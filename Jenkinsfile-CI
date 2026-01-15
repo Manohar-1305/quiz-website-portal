@@ -175,6 +175,11 @@ pipeline {
           }
       }
     }
+post {
+  success {
+    build job: 'CD-Quiz-Application'
+  }
+}
 
     }
 }
