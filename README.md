@@ -135,7 +135,55 @@ Description = Kubernetes kubeconfig for KIND cluster
 
 # Create a Kind Cluster
 kind create cluster --config kind-config
+```bash
+vi kind-config
 
+kind: Cluster
+apiVersion: kind.x-k8s.io/v1alpha4
+
+networking:
+  apiServerAddress: "0.0.0.0"
+  apiServerPort: 6443
+
+kubeadmConfigPatches:
+- |
+  kind: ClusterConfiguration
+  apiServer:
+    certSANs:
+      - "3.108.227.150"   # ← Add IP of NODE
+
+nodes:
+  - role: control-plane
+    extraPortMappings:
+      - containerPort: 30000
+        hostPort: 30000
+      - containerPort: 30001
+        hostPort: 30001
+      - containerPort: 30002
+        hostPort: 30002
+      - containerPort: 30003
+        hostPort: 30003
+      - containerPort: 30004
+        hostPort: 30004
+      - containerPort: 30005
+        hostPort: 30005
+      - containerPort: 30006
+        hostPort: 30006
+      - containerPort: 30007
+        hostPort: 30007
+      - containerPort: 30008
+        hostPort: 30008
+      - containerPort: 30009
+        hostPort: 30009
+      - containerPort: 30010
+        hostPort: 30010
+  - role: worker
+  - role: worker
+```
+# Set the Cluster to the IP of Server
+kubectl config set-cluster kind-multi-node-cluster   --server=https://3.108.227.150:6443
+- Change the IP of the Kind Server
+- 
 # Get Kubeconfig
 kind get kubeconfig --name multi-node-cluster
 kind get kubeconfig --name multi-node-cluster > kubeconfig
