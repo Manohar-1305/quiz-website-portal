@@ -181,7 +181,9 @@ nodes:
   - role: worker
 ```
 # Set the Cluster to the IP of Server
+```
 kubectl config set-cluster kind-multi-node-cluster   --server=https://3.108.227.150:6443
+```
 - Change the IP of the Kind Server
 - 
 # Get Kubeconfig
