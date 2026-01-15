@@ -39,7 +39,7 @@ Name = sonar-server
 Server URL = http://65.2.184.54:9000
 Server authentication token = Sonar-token
 
-Sonarqube URL
+# Go to Sonarqube URL
 Administration → Configuration → Security → User
 Create a new token and store it in Jenkins
 
@@ -49,6 +49,7 @@ Create token = Sonar-token
 Administration → Configuration → Webhooks
 Name = jenkins-sonar-webhoook
 URL = http://65.2.137.252:8080/sonarqube-webhook
+* Change the ip of jenkins
 
 # Installation of Snyk
 Install Node.js if not already installed
