@@ -5,7 +5,8 @@ metadata:
   namespace: argocd
 spec:
   project: default
-
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
   source:
     repoURL: https://github.com/Manohar-1305/quiz-website-portal.git
     targetRevision: main
@@ -22,3 +23,4 @@ spec:
     automated:
       prune: true
       selfHeal: true
+
