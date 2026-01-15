@@ -21,9 +21,10 @@ echo "jenkins ALL=(ALL) NOPASSWD: ALL" | sudo tee /etc/sudoers.d/jenkins && sudo
 # Setting sudo Permission for docker
 sudo chmod 666 /var/run/docker.sock
 
-# Configure Sonarqube
+# Configure OSWAP Dependency
 Tools -> Dependency -> DP-Check -> Install automatically-> Install from github.com -> Version latest
 
+# Configure Sonarqube
 Tools => SonarQube Scanner installations
 Add Sonarqube Scanner
 Name = sonar-server
