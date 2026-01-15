@@ -5,7 +5,7 @@ This section documents the steps and configurations used to deploy the applicati
 ---
 
 ## Prerequisites Installed
-- Jenkins with required plugins
+- Install required plugins in Jenkins
 
 Docker Commons  
 Docker Pipeline  
@@ -187,8 +187,10 @@ kubectl config set-cluster kind-multi-node-cluster   --server=https://3.108.227.
 - Change the IP of the Kind Server
 - 
 # Get Kubeconfig
+```
 kind get kubeconfig --name multi-node-cluster
 kind get kubeconfig --name multi-node-cluster > kubeconfig
+```
 
 # Change the IP to expose it to all
 ```bash
@@ -197,17 +199,21 @@ server: https://3.108.227.150:6443
 docker ps | grep control-plane
 ```
 # Install kubectl on Jenkins server
+```
 curl -LO https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl
 
 chmod +x kubectl
 sudo mv kubectl /usr/local/bin/
 kubectl version --client
+```
 
 # Get kubeconfig
 
 On kind Server - save kubeconfig
+```
 export KUBECONFIG=/root/config
 kubectl get nodes
+```
 
 # Argo CD Installation (NodePort)
 
