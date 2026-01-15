@@ -11,6 +11,5 @@ service:
   targetPort: 5000
   nodePort: 30005
 
-  env:
+env:
   SQLALCHEMY_DATABASE_URI: mysql://quiz-user:password@mysql-quizdb-service:3306/quizdb
-
