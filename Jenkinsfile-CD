@@ -2,13 +2,12 @@ pipeline {
     agent any
 
     stages {
-        stage('Apply Argo CD Applications') {
+        stage('Deploy Quiz Apply Via Argocd') {
             steps {
                 script {
                     withCredentials([file(credentialsId: 'kubeconfig-file', variable: 'KUBECONFIG')]) {
                         sh '''
-                          kubectl apply -f argocd/mysql-quizdb.yaml
-                          kubectl apply -f argocd/quiz-app.yaml
+                          kubectl apply -f argocd/bootstrap/app-of-apps.yaml
                         '''
                     }
                 }
