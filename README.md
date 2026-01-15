@@ -38,8 +38,9 @@ systemctl start docker
 systemctl enable docker
 ```
 # Setting sudo Permission for docker
+```
 sudo chmod 666 /var/run/docker.sock
-
+```
 # Install Helm for Installing argocd
 ```
 snap install helm --classic
