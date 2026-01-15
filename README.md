@@ -114,13 +114,6 @@ Username with password
 ID = docker-creds
 Description = docker-creds
 
-#Setting sudo Permission for docker
-```bash
-sudo chmod 666 /var/run/docker.sock
-sudo usermod -aG docker jenkins
-sudo systemctl restart docker
-sudo systemctl restart jenkins
-```
 # Trivy Installation
 ```bash
 curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sudo sh -s -- -b /usr/local/bin
